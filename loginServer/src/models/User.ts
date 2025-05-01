@@ -7,7 +7,6 @@ interface IUser extends Document{
     password: string,
     isAdmin: Boolean,
     createdAt: Date,
-    imageId?: string
 }
 
 let userSchema: Schema = new Schema ({
@@ -15,7 +14,6 @@ let userSchema: Schema = new Schema ({
     password: {type: String, required: true},
     isAdmin: {type: Boolean, required: false, default: false},
     createdAt: {type: Date, default: Date.now},
-    imageId: {type: String, required: false}
 })
 
 const users: mongoose.Model<IUser> = mongoose.model<IUser>("users", userSchema)

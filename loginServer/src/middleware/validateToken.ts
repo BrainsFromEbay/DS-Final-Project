@@ -38,32 +38,3 @@ export const validateToken = (req: CustomRequest, res: Response, next: NextFunct
 
     }
 }
-
-
-// **********************************************
-// **********************************************
-// **************NOT IN USE**********************
-// **********************************************
-// **********************************************
-
-// export const adminValidateToken = (req: CustomRequest, res: Response, next: NextFunction) => {
-//     const token: string | undefined = req.header('authorization')?.split(" ")[1]
-
-//     if(!token) {res.status(401).json({message: "Token not found."})}
-//     else{
-//         try {
-//             const verified: JwtPayload = jwt.verify(token, process.env.SECRET as string) as JwtPayload
-//             if (verified.isAdmin == false) {
-//                 res.status(403).json({message: "Access denied."})
-//             } else {
-//                 req.user = verified
-//                 next()
-//             }
-    
-//         } catch (error: any) {
-//             res.status(401).json({message: "Missing token"})
-//         }
-//     }
-// }
-
-
