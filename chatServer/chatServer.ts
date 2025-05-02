@@ -3,6 +3,9 @@ import express, { Express } from "express"
 import mongoose from "mongoose"
 import http from "http"
 import dotenv from "dotenv"
+import { chatSocket } from "./socket"
+
+import chatRouter from "./src/routes/chat"
 
 const app: Express = express()
 
@@ -19,23 +22,17 @@ const server = http.createServer(app)
 
 const io = new Server(server, {
     cors: {
-        origin: "*",
+        origin: "*", // lisää tähän frontend URL
         methods: ["GET", "POST"],
     }
 })
 
-io.on("connection", (socket) => {
-    console.log("User connected:", socket.id)
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
-    socket.on("send_message", (data) => {
-        console.log("Message:", data)
-        io.emit("receive_message", data)
-    })
+app.use("/api", chatRouter)
 
-    socket.on("disconnect", () => {
-        console.log("User disconnected:", socket.id)
-    })
-})
+chatSocket(io) 
 
 server.listen(3001, () => {
     console.log("Chat Server is running on port 3001")
