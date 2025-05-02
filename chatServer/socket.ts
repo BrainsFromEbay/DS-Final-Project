@@ -15,9 +15,9 @@ function chatSocket(io: Server) {
                     createdAt: new Date(),
                 })
 
-                await newMessage.save()
+                const savedMessage = await newMessage.save()
             
-                io.emit("receive_message", data)
+                io.emit("receive_message", savedMessage)
             } catch (error) {
                 console.error("Error saving message:", error)
             }

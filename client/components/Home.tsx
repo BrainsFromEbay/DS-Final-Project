@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import TextField from '@mui/material/TextField';
 import { Box, Button, Typography } from '@mui/material';
-import { io } from "socket.io-client"
+import { io, Socket } from "socket.io-client"
 import React from 'react';
 import { Message } from '../../chatServer/src/models/message'
 
@@ -21,6 +21,9 @@ function Home() {
     const [username, setUsername] = useState<string>("")
     const [messages, setMessages] = useState<Message[]>([]);
 
+    //socketRef is used to store the socket connection
+    const socketRef = useRef<Socket | null>(null)
+
     useEffect(() => {
       const storedToken = localStorage.getItem('token');
       if (!storedToken) {
@@ -30,7 +33,22 @@ function Home() {
     }, []);
 
     
-    const socket = io(URL)
+    useEffect(() => {
+      if (!socketRef.current) {
+        socketRef.current = io(URL)
+
+        const socket = socketRef.current
+
+        socket.on("receive_message", (data: Message) => {
+          setMessages((prevMessages)=> [...prevMessages, data])
+        })
+        return () => {
+          socket.off("receive_message")
+          socket.disconnect()
+          socketRef.current = null
+        }
+      }
+    }, [])
 
     const sendMessage = () => {
       if (!message.trim()) return; // Check that message is not empty
@@ -40,8 +58,8 @@ function Home() {
         username: username || 'Anon', // Default to 'Anon' if username is empty
       }
       
-      socket.emit("send_message", newMessage);
-
+      socketRef.current?.emit("send_message", newMessage);
+      
       setMessage('')
     };
     
@@ -54,16 +72,7 @@ function Home() {
             setMessages(data);
           })
           .catch(err => console.error("Failed to load messages", err));
-
-      socket.on("receive_message", (data: Message) => {
-        setMessages((prevMessages) => [...prevMessages, data]);
-      });
-
-      return () => {
-        socket.off("receive_message");
-      };
-    }, [token]);
-
+        }, [token])
   
   return (
     <><Box
@@ -72,6 +81,7 @@ function Home() {
       justifyContent="center"
       alignItems="center"
       height="90vh"
+      paddingTop="10px"
     >
       {}
       <Box width="100%" maxWidth="600px" flexGrow={1} overflow="auto" mb={2} border="1px solid #ccc" borderRadius="4px">
