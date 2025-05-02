@@ -1,0 +1,24 @@
+{
+  "name": "ds-final-project",
+  "version": "1.0.0",
+  "description": "Final Group Project for Distributed Systems",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "cd client && npm run dev",
+    "chatServer": "cd chatServer && npm start",
+    "loginServer": "cd loginServer && npm start",
+    "concurrently": "concurrently \"npm run client\" \"npm run chatServer\" \"npm run loginServer\""
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BrainsFromEbay/DS-Final-Project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BrainsFromEbay/DS-Final-Project/issues"
+  },
+  "homepage": "https://github.com/BrainsFromEbay/DS-Final-Project#readme"
+}
