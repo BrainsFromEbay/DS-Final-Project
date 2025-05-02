@@ -6,7 +6,8 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import "../styles/header.css"
 import Typography from "@mui/material/Typography";
-import React, { useEffect, useState } from "react";
+import React from "react";
+
 
 export const Header = () => {
 
@@ -31,7 +32,7 @@ export const Header = () => {
             >
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Notes app
+              Chat App
             </Typography>
               <TokenFound/>
           </Toolbar>
