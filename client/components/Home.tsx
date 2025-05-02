@@ -3,8 +3,9 @@ import TextField from '@mui/material/TextField';
 import { Box, Button, Typography } from '@mui/material';
 import { io } from "socket.io-client"
 import React from 'react';
+import { IMessage } from '../../chatServer/models/message'
 
-const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:4000'; //TÄHÄN BACKEND URL
+const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:3001'; //TÄHÄN BACKEND URL
 
 interface Message {
   _id?: string;

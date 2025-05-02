@@ -17,14 +17,18 @@ function Signup() {
   const handlebuttonSubmit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
 
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("password", password);
+    const formData = {
+      email: email,
+      password: password
+    }
 
     try {
       const response = await fetch('/api/register', {
         method: 'POST',
-        body: formData,
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData),
       });
 
       if (response.ok) {
