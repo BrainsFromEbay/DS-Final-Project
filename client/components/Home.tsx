@@ -3,10 +3,10 @@ import TextField from '@mui/material/TextField';
 import { Box, Button, Typography } from '@mui/material';
 import { io } from "socket.io-client"
 import React from 'react';
-import { IMessage } from '../../chatServer/models/message'
+import { Message } from '../../chatServer/src/models/message'
 
 const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:3001'; //TÄHÄN BACKEND URL
-
+//TODO: currently the chatbar goes down with the messages, fix this
 interface Message {
   _id?: string;
   username?: string;
@@ -24,22 +24,30 @@ function Home() {
     useEffect(() => {
       const storedToken = localStorage.getItem('token');
       if (!storedToken) {
-        window.location.href = '/login'
-        return
+        setToken(null)
       };
       setToken(storedToken)
     }, []);
 
-    if (!token) {return}
-
+    
     const socket = io(URL)
 
     const sendMessage = () => {
-      socket.emit("send_message", { text: message, username: username});
-      setMessage("")
+      if (!message.trim()) return; // Check that message is not empty
+      
+      const newMessage: Message = {
+        text: message,
+        username: username || 'Anon', // Default to 'Anon' if username is empty
+      }
+      
+      socket.emit("send_message", newMessage);
+
+      setMessage('')
     };
     
       useEffect(() => {
+        if (!token) return;
+
         fetch("/api/messages")
           .then(response => response.json())
           .then(data => {
@@ -54,7 +62,7 @@ function Home() {
       return () => {
         socket.off("receive_message");
       };
-    }, []);
+    }, [token]);
 
   
   return (
@@ -63,21 +71,32 @@ function Home() {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
+      height="90vh"
     >
-      <div>
-      <Box width="100%" maxWidth="600px" mb={2}>
+      {}
+      <Box width="100%" maxWidth="600px" flexGrow={1} overflow="auto" mb={2} border="1px solid #ccc" borderRadius="4px">
         {messages.map((msg, index) => (
           <Typography key={msg._id || index} variant="body1">
             <strong>{msg.username || 'Anon'}:</strong> {msg.text}
           </Typography>
         ))}
       </Box>
+      <Box 
+      width= "100%"
+      maxWidth="600px"
+      display="flex"
+    
+      gap={2}
+      p={2}
+    >
         <TextField name='message' id="standard-basic" label="message" value={message} onChange={(e) => setMessage(e.target.value)} variant="standard" />
         <TextField name='username' id="standard-basic" label="username" value={username} onChange={(e) => setUsername(e.target.value)} variant="standard" />
         <Button id='sendMessage' variant="contained" color="primary" onClick={sendMessage} fullWidth>
           Send message
         </Button>
-      </div>
+      </Box>
+      
+
     </Box></>
   )
 }
