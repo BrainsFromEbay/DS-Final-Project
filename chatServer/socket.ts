@@ -8,10 +8,13 @@ function chatSocket(io: Server) {
     
         socket.on("send_message", async (data) => {
             console.log("Message:", data)
+            console.log(socket)
 
             try {
                 const token = socket.handshake.auth.token
+                console.log("Token:", token)
                 const decodedToken = jwt.verify(token, process.env.SECRET as string) as JwtPayload
+                console.log("Decoded token:", decodedToken)
                 const newMessage = new Message({
                     username: decodedToken.username,
                     text: data.text,

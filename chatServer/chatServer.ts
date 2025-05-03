@@ -8,7 +8,7 @@ import chatRouter from "./src/routes/chat"
 
 const app: Express = express()
 
-const mongoDB: string ="mongodb://localhost:27017/chat"
+const mongoDB: string ="mongodb://127.0.0.1:27017/chat"
 mongoose.connect(mongoDB)
     .then(() => {
         console.log("Connected to MongoDB")
@@ -24,6 +24,7 @@ const io = new Server(server, {
         origin: "http://localhost:3003", // lisää tähän frontend URL
         methods: ["GET", "POST"],
         credentials: true,
+        
     }
 })
 

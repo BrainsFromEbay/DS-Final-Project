@@ -13,13 +13,11 @@ const cors_1 = __importDefault(require("cors"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = parseInt(process.env.PORT);
-
 const corsOptions = {
     origin: 'http://localhost:3002',
     optionsSuccessStatus: 200
 };
 app.use((0, cors_1.default)(corsOptions));
-
 const mongoDB = "mongodb://127.0.0.1:27017/ProkkisDB";
 mongoose_1.default.connect(mongoDB);
 mongoose_1.default.Promise = Promise;

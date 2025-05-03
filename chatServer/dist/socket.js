@@ -1,15 +1,24 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.chatSocket = chatSocket;
 const message_1 = require("./src/models/message");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 function chatSocket(io) {
     io.on("connection", (socket) => {
         console.log("User connected:", socket.id);
         socket.on("send_message", async (data) => {
             console.log("Message:", data);
+            console.log(socket);
             try {
+                const token = socket.handshake.auth.token;
+                console.log("Token:", token);
+                const decodedToken = jsonwebtoken_1.default.verify(token, process.env.SECRET);
+                console.log("Decoded token:", decodedToken);
                 const newMessage = new message_1.Message({
-                    username: data.username,
+                    username: decodedToken.username,
                     text: data.text,
                     createdAt: new Date(),
                 });

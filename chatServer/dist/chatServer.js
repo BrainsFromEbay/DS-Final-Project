@@ -8,10 +8,9 @@ const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const http_1 = __importDefault(require("http"));
 const socket_1 = require("./socket");
-const cors_1 = __importDefault(require("cors"));
 const chat_1 = __importDefault(require("./src/routes/chat"));
 const app = (0, express_1.default)();
-const mongoDB = "mongodb://localhost:27017/chat";
+const mongoDB = "mongodb://127.0.0.1:27017/chat";
 mongoose_1.default.connect(mongoDB)
     .then(() => {
     console.log("Connected to MongoDB");
@@ -27,11 +26,6 @@ const io = new socket_io_1.Server(server, {
         credentials: true,
     }
 });
-app.use((0, cors_1.default)({
-    origin: "http://localhost:3003",
-    methods: ["GET", "POST"],
-    credentials: true,
-}));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use("/api", chat_1.default);

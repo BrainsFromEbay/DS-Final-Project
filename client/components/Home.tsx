@@ -5,6 +5,7 @@ import { io, Socket } from "socket.io-client"
 import React from 'react';
 import { Message } from '../../chatServer/src/models/message'
 import {  jwtDecode } from "jwt-decode"
+import dotenv from 'dotenv'
 
 const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:3001'; //TÄHÄN BACKEND URL
 //TODO: currently the chatbar goes down with the messages, fix this
@@ -27,10 +28,11 @@ function Home() {
 
     useEffect(() => {
       const storedToken = localStorage.getItem('token');
+    
       if (!storedToken) {
         setToken(null)
-      return
-    }
+        return
+      }
 
     setToken(storedToken)
 
@@ -43,6 +45,7 @@ function Home() {
    } ,[])
     useEffect(() => {
       if (!socketRef.current) {
+        const token = localStorage.getItem('token')
         socketRef.current = io(URL, {
           auth: {
             token: token,
