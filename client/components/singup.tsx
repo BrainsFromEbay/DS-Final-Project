@@ -7,7 +7,7 @@ import { Link, Typography } from '@mui/material';
 
 function Signup() {
 
-  const [email, setEmail] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
   // Function that handles the signput
@@ -18,7 +18,7 @@ function Signup() {
     event.preventDefault();
 
     const formData = {
-      email: email,
+      username: username,
       password: password
     }
 
@@ -32,11 +32,9 @@ function Signup() {
       });
 
       if (response.ok) {
-        setEmail("");
-        setPassword("");
         window.location.href = "/login"
       } else {
-        console.log('Error signing in:', response);
+        console.log('Error registering:', response);
       }
     } catch (error: unknown) {
       console.log(error);
@@ -69,7 +67,7 @@ function Signup() {
             }}
   >
     {/* INPUT FIELDS AND BUTTONS */}
-    <TextField name='email' id="standard-basic" label="Email" value={email} onChange={(e) => setEmail(e.target.value)} variant="standard" />
+    <TextField name='username' id="standard-basic" label="Username" value={username} onChange={(e) => setUsername(e.target.value)} variant="standard" />
     <TextField name='password' id="standard-basic" label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} variant="standard" />
     <Button name="signupButton" variant="contained" color="primary" onClick={handlebuttonSubmit} fullWidth>
           Sign Up

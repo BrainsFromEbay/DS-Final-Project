@@ -1,7 +1,8 @@
 import {Server, Socket} from "socket.io"
 import { Message } from "./src/models/message"
+import jwt, {JwtPayload}from "jsonwebtoken"
 
-function chatSocket(io: Server) {
+function chatSocket(io: Server) { 
     io.on("connection", (socket) => {
         console.log("User connected:", socket.id)
     
@@ -9,8 +10,10 @@ function chatSocket(io: Server) {
             console.log("Message:", data)
 
             try {
+                const token = socket.handshake.auth.token
+                const decodedToken = jwt.verify(token, process.env.SECRET as string) as JwtPayload
                 const newMessage = new Message({
-                    username: data.username,
+                    username: decodedToken.username,
                     text: data.text,
                     createdAt: new Date(),
                 })

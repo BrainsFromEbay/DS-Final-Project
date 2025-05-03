@@ -4,6 +4,7 @@ import { Box, Button, Typography } from '@mui/material';
 import { io, Socket } from "socket.io-client"
 import React from 'react';
 import { Message } from '../../chatServer/src/models/message'
+import {  jwtDecode } from "jwt-decode"
 
 const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:3001'; //TÄHÄN BACKEND URL
 //TODO: currently the chatbar goes down with the messages, fix this
@@ -28,14 +29,25 @@ function Home() {
       const storedToken = localStorage.getItem('token');
       if (!storedToken) {
         setToken(null)
-      };
-      setToken(storedToken)
-    }, []);
+      return
+    }
 
-    
+    setToken(storedToken)
+
+    try{
+      const decodedToken: {username: string} = jwtDecode(storedToken)
+      setUsername(decodedToken.username) //get the username from the token
+    } catch (error) {
+      console.error("Token decode failed", error)
+    }
+   } ,[])
     useEffect(() => {
       if (!socketRef.current) {
-        socketRef.current = io(URL)
+        socketRef.current = io(URL, {
+          auth: {
+            token: token,
+          }
+        })
 
         const socket = socketRef.current
 
@@ -64,9 +76,9 @@ function Home() {
     };
     
       useEffect(() => {
-        if (!token) return;
+        //if (!token) return;
 
-        fetch("/api/messages")
+        fetch("http://localhost:3001/api/messages")
           .then(response => response.json())
           .then(data => {
             setMessages(data);
@@ -99,9 +111,8 @@ function Home() {
       gap={2}
       p={2}
     >
-        <TextField name='message' id="standard-basic" label="message" value={message} onChange={(e) => setMessage(e.target.value)} variant="standard" />
-        <TextField name='username' id="standard-basic" label="username" value={username} onChange={(e) => setUsername(e.target.value)} variant="standard" />
-        <Button id='sendMessage' variant="contained" color="primary" onClick={sendMessage} fullWidth>
+        <TextField name='message' id="standard-basic" label="message" value={message} onChange={(e) => setMessage(e.target.value)} variant="standard" fullWidth/>
+        <Button id='sendMessage' variant="contained" color="primary" onClick={sendMessage}>
           Send message
         </Button>
       </Box>

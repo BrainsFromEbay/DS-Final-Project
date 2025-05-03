@@ -4,18 +4,18 @@ import router from "./src/routing/index"
  import mongoose ,{Connection} from 'mongoose'
 import morgan from "morgan"
 import dotenv from "dotenv"
-// import cors ,{CorsOptions,} from "cors"
+import cors ,{CorsOptions,} from "cors"
 
 dotenv.config()
 
 const app: Express = express()
 const port:number = parseInt(process.env.PORT as string)
 
-// const corsOptions: CorsOptions = {
-//     origin: 'http://localhost:3002',
-//     optionsSuccessStatus: 200
-// }
-// app.use(cors(corsOptions));
+ const corsOptions: CorsOptions = {
+     origin: 'http://localhost:3002',
+     optionsSuccessStatus: 200
+ }
+ app.use(cors(corsOptions));
 
 
  const mongoDB: string = "mongodb://127.0.0.1:27017/ProkkisDB";

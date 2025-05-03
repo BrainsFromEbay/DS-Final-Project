@@ -13,8 +13,8 @@ function chatSocket(io) {
                     text: data.text,
                     createdAt: new Date(),
                 });
-                await newMessage.save();
-                io.emit("receive_message", data);
+                const savedMessage = await newMessage.save();
+                io.emit("receive_message", savedMessage);
             }
             catch (error) {
                 console.error("Error saving message:", error);
