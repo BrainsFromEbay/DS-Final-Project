@@ -10,7 +10,6 @@ const http_1 = __importDefault(require("http"));
 const socket_1 = require("./socket");
 const chat_1 = __importDefault(require("./src/routes/chat"));
 const cors_1 = __importDefault(require("cors"));
-const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
 const corsOptions = {
     origin: 'http://localhost:3003',

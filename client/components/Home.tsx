@@ -89,7 +89,7 @@ function Home() {
           .then(data => {
             setMessages(data);
           })
-          .catch(err => console.error("Failed to load messages", err));
+          .catch(err => (console.error("Failed to load messages", err), alert("Server offline")));
         }, [token])
   
   return (
