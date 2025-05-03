@@ -9,7 +9,12 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const http_1 = __importDefault(require("http"));
 const socket_1 = require("./socket");
 const chat_1 = __importDefault(require("./src/routes/chat"));
+const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
+const CorsOptions = {
+    origin: "http://localhost:3003", // lisää tähän frontend URL
+    optionsSuccessStatus: 200,
+};
 const mongoDB = "mongodb://127.0.0.1:27017/chat";
 mongoose_1.default.connect(mongoDB)
     .then(() => {
@@ -26,6 +31,7 @@ const io = new socket_io_1.Server(server, {
         credentials: true,
     }
 });
+app.use((0, cors_1.default)(CorsOptions));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use("/api", chat_1.default);

@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/BrainsFromEbay/DS-Final-Project#readme",
   "dependencies": {
+    "concurrently": "^9.1.2",
     "jsonwebtoken": "^9.0.2"
   }
 }

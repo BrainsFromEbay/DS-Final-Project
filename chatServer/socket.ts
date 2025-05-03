@@ -1,6 +1,9 @@
 import {Server, Socket} from "socket.io"
 import { Message } from "./src/models/message"
 import jwt, {JwtPayload}from "jsonwebtoken"
+import dotenv from "dotenv"
+
+dotenv.config()
 
 function chatSocket(io: Server) { 
     io.on("connection", (socket) => {
@@ -8,7 +11,6 @@ function chatSocket(io: Server) {
     
         socket.on("send_message", async (data) => {
             console.log("Message:", data)
-            console.log(socket)
 
             try {
                 const token = socket.handshake.auth.token

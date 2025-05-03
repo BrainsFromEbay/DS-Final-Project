@@ -6,12 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.chatSocket = chatSocket;
 const message_1 = require("./src/models/message");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 function chatSocket(io) {
     io.on("connection", (socket) => {
         console.log("User connected:", socket.id);
         socket.on("send_message", async (data) => {
             console.log("Message:", data);
-            console.log(socket);
             try {
                 const token = socket.handshake.auth.token;
                 console.log("Token:", token);

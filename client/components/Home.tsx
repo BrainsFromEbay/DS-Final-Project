@@ -6,6 +6,7 @@ import React from 'react';
 import { Message } from '../../chatServer/src/models/message'
 import {  jwtDecode } from "jwt-decode"
 import dotenv from 'dotenv'
+import { useNavigate } from 'react-router-dom'
 
 const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:3001'; //TÄHÄN BACKEND URL
 //TODO: currently the chatbar goes down with the messages, fix this
@@ -22,6 +23,7 @@ function Home() {
     const [token, setToken] = useState<string | null>(null)
     const [username, setUsername] = useState<string>("")
     const [messages, setMessages] = useState<Message[]>([]);
+    const navigate = useNavigate()
 
     //socketRef is used to store the socket connection
     const socketRef = useRef<Socket | null>(null)
@@ -31,6 +33,7 @@ function Home() {
     
       if (!storedToken) {
         setToken(null)
+        navigate("/login")
         return
       }
 
