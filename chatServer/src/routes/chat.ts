@@ -5,7 +5,7 @@ const router: Router = Router()
 
 
 // Get all messages from the database
-router.get("/api/messages", async (req: Request, res: Response) => {
+router.get("/messages", async (req: Request, res: Response) => {
     try {
         const messages = await Message.find()
         .sort({ createdAt: -1 }) // Sort by createdAt in descending order

@@ -7,7 +7,7 @@ import { Link, Typography } from '@mui/material';
 // import { generateAndStoreKeyPair } from '../utils/keygenerate'
 
 type TLogin = {
-  email: string,
+  username: string,
   password: string,
 }
 
@@ -17,14 +17,14 @@ interface LoginResponse {
 }
 
 function Login() {
-  const [email, setEmail] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   
     const handleLogin = async (e: React.FormEvent) => {
       e.preventDefault();
 
       const newLogin: TLogin = {
-        email: email,
+        username: username,
         password: password,
       }
   
@@ -38,7 +38,7 @@ function Login() {
         });
   
         if (response.ok) {
-          setEmail("");
+          setUsername("");
           setPassword("");
             const data: LoginResponse = await response.json()
               console.log(data)
@@ -80,7 +80,7 @@ function Login() {
               backgroundColor: 'white',
             }}
   >
-    <TextField name='email' id="standard-basic" label="Email" value={email} onChange={(e) => setEmail(e.target.value)} variant="standard" />
+    <TextField name='username' id="standard-basic" label="Username" value={username} onChange={(e) => setUsername(e.target.value)} variant="standard" />
     <TextField name='password' id="standard-basic" label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} variant="standard" />
     <Button id='loginButton' variant="contained" color="primary" onClick={handleLogin} fullWidth>
     Log in

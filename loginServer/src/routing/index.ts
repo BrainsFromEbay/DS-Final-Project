@@ -25,17 +25,17 @@ router.post("/api/register", //regValitor,
             console.log("Received body:", req.body);
             
             try {
-                let email:string = req.body.email
-                let foundUser = await users.findOne({ email: email })
+                let username:string = req.body.username
+                let foundUser = await users.findOne({ username: username })
                 console.log(foundUser);
                 
                 if (foundUser) {
-                    res.status(403).json({email: "Email already in use"})
+                    res.status(403).json({email: "Username already in use"})
                 } else {
                     const salt: string = bcrypt.genSaltSync(10)
                     const hash: string = bcrypt.hashSync(req.body.password, salt)   
                     let newUser:IUser = new users ({
-                        email: req.body.email,
+                        username: req.body.username,
                         password: hash,
                     })
                     await newUser.save()
@@ -66,13 +66,14 @@ router.post("/api/login", //logValidator,
         
         if (errors.isEmpty()) {
         try {
-            let email:string = req.body.email
-            const foundUser = await users.findOne({ email: email })
+            const username:string = req.body.username
+            const foundUser = await users.findOne({ username: username })
             
             if (foundUser) {
                 if (bcrypt.compareSync(req.body.password, foundUser.password)){
                     const JwtPayload: JwtPayload = {
                         _id: foundUser._id,
+                        username: foundUser.username,
                         isAdmin: foundUser.isAdmin
                     }
                     const token: string = jwt.sign(JwtPayload, process.env.SECRET as string, {expiresIn: "30m"})

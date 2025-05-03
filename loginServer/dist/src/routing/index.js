@@ -22,17 +22,17 @@ async (req, res) => {
     if (errors.isEmpty()) {
         console.log("Received body:", req.body);
         try {
-            let email = req.body.email;
-            let foundUser = await User_1.users.findOne({ email: email });
+            let username = req.body.username;
+            let foundUser = await User_1.users.findOne({ username: username });
             console.log(foundUser);
             if (foundUser) {
-                res.status(403).json({ email: "Email already in use" });
+                res.status(403).json({ email: "Username already in use" });
             }
             else {
                 const salt = bcrypt_1.default.genSaltSync(10);
                 const hash = bcrypt_1.default.hashSync(req.body.password, salt);
                 let newUser = new User_1.users({
-                    email: req.body.email,
+                    username: req.body.username,
                     password: hash,
                 });
                 await newUser.save();
@@ -61,12 +61,13 @@ async (req, res) => {
     const errors = (0, express_validator_1.validationResult)(req);
     if (errors.isEmpty()) {
         try {
-            let email = req.body.email;
-            const foundUser = await User_1.users.findOne({ email: email });
+            const username = req.body.username;
+            const foundUser = await User_1.users.findOne({ username: username });
             if (foundUser) {
                 if (bcrypt_1.default.compareSync(req.body.password, foundUser.password)) {
                     const JwtPayload = {
                         _id: foundUser._id,
+                        username: foundUser.username,
                         isAdmin: foundUser.isAdmin
                     };
                     const token = jsonwebtoken_1.default.sign(JwtPayload, process.env.SECRET, { expiresIn: "30m" });

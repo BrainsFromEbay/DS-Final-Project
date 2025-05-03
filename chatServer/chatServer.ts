@@ -4,7 +4,6 @@ import mongoose from "mongoose"
 import http from "http"
 import dotenv from "dotenv"
 import { chatSocket } from "./socket"
-
 import chatRouter from "./src/routes/chat"
 
 const app: Express = express()
@@ -22,8 +21,9 @@ const server = http.createServer(app)
 
 const io = new Server(server, {
     cors: {
-        origin: "*", // lisää tähän frontend URL
+        origin: "http://localhost:3003", // lisää tähän frontend URL
         methods: ["GET", "POST"],
+        credentials: true,
     }
 })
 
