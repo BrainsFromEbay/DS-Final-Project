@@ -1,6 +1,8 @@
 import {Server, Socket} from "socket.io"
 import { Message } from "./src/models/message"
 import jwt, {JwtPayload}from "jsonwebtoken"
+import dotenv from "dotenv";
+dotenv.config();
 
 function chatSocket(io: Server) { 
     io.on("connection", (socket) => {

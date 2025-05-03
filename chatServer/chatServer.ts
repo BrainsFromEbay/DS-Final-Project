@@ -5,8 +5,14 @@ import http from "http"
 import dotenv from "dotenv"
 import { chatSocket } from "./socket"
 import chatRouter from "./src/routes/chat"
+import cors ,{CorsOptions,} from "cors"
 
 const app: Express = express()
+
+const corsOptions: CorsOptions = {
+    origin: 'http://localhost:3003',
+    optionsSuccessStatus: 200
+}
 
 const mongoDB: string ="mongodb://127.0.0.1:27017/chat"
 mongoose.connect(mongoDB)
@@ -28,6 +34,7 @@ const io = new Server(server, {
     }
 })
 
+app.use(cors(corsOptions));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
