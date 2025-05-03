@@ -14,11 +14,17 @@ export const Header = () => {
     const token: string | null = localStorage.getItem('token')
     function TokenFound(){
       if (token) {
-        return <div><Button component={Link} to="/login" color="inherit">login</Button>  <Button component={Link} to="/signup" color="inherit">signup</Button> <Button component={Link} to="/" color="inherit">Home</Button></div>
+        return <div><Button onClick={handleLogOut} color="inherit">logout</Button> <Button component={Link} to="/" color="inherit">Home</Button></div>
       } else {
         return <div><Button component={Link} to="/login" color="inherit">login</Button>  <Button component={Link} to="/signup" color="inherit">signup</Button></div>
       }
     }
+
+    const handleLogOut = () => {
+      localStorage.removeItem("token")
+      window.location.href = "/login"
+    }
+
     return (
       <Box sx={{ flexGrow: 2 }}>
         <AppBar position="static">
